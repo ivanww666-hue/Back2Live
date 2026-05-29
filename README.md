@@ -121,38 +121,62 @@ pip install -r requirements.txt
 pip install redis
 ```
 
-### 运行模式
+### 命令行回测
 
 ```bash
-# 回测（默认模式）
+# 默认回测（运行 config.json 中全部启用策略）
 python main.py
 
-# 指定配置文件
+# 指定配置文件回测
 python main.py --config my_config.json
 
-# 实盘模式
-python main.py --mode live
-
-# 下载历史K线数据
-python main.py --download
+# 回测指定策略（逗号分隔名称）
+python main.py --strategies "ETH网格"
+python main.py --strategies "ETH网格,趋势跟踪型,双均线交叉"
 
 # 生成 HTML 报告（从已有 JSON 结果）
 python main.py --report results/backtest_*.json
 ```
 
-### 策略控制
+### 命令行实盘
 
 ```bash
-# 回测指定策略（逗号分隔名称）
-python main.py --strategies "ETH网格"
-python main.py --strategies "ETH网格,趋势跟踪型,双均线交叉"
+# 测试网实盘（默认使用配置文件中的 testnet 设置）
+python main.py --mode live
 
-# 实盘指定策略
-python main.py --mode live --strategies "均线斜率策略"
+# 测试网实盘（指定策略）
+python main.py --mode live --strategies "ETH网格"
 
-# 测试网 / 主网
-python main.py --mode live --testnet      # 测试网
-python main.py --mode live --no-testnet   # 主网
+# 主网实盘
+python main.py --mode live --no-testnet
+
+# 主网实盘指定策略
+python main.py --mode live --no-testnet --strategies "趋势跟踪型"
+```
+
+### 下载历史数据
+
+回测前需先下载历史K线数据到本地 SQLite 数据库。系统根据配置文件中所有策略的 `symbol` 字段自动收集需要下载的品种：
+
+```bash
+# 根据 config.json 中策略的品种下载数据
+python main.py --download
+
+# 指定配置文件下载
+python main.py --config my_config.json --download
+
+# 回测指定策略前先下载对应的历史数据
+python main.py --strategies "ETH网格" --download
+```
+
+下载完成后自动回测：
+
+```bash
+# 下载全部数据后回测
+python main.py --download && python main.py
+
+# 下载指定策略的数据后仅回测该策略
+python main.py --strategies "ETH网格" --download && python main.py --strategies "ETH网格"
 ```
 
 ### 命令行参数
