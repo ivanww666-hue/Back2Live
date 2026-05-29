@@ -1,0 +1,123 @@
+{
+    "_comment": "Binance 多策略多品种配置文件 — 优化参数：减少网格密度降低手续费，放宽止盈止损增加单笔利润",
+    "mode": "live",
+    "interval": "1h",
+    "initial_capital": 10000.0,
+    "db_path": "market_data.db",
+    "output_path": "results",
+    "start_date": "2025-01-01",
+    "end_date": "2026-01-20",
+    "max_workers": 4,
+    "pending_check_interval_sec": 60,
+    "pending_timeout_ms": 300000,
+    "redis": {
+        "host": "localhost",
+        "port": 6379,
+        "db": 0,
+        "password": null,
+        "ttl_seconds": 604800,
+        "equity_max_len": 2000
+    },
+    // Binance API 配置：通过环境变量注入，不要把真实密钥写入仓库
+    "binance": {
+        "api_key": "${BINANCE_API_KEY}",
+        "api_secret": "${BINANCE_API_SECRET}",
+        "testnet": true,
+        "quote_asset": "USDT"
+    },
+    // 测试网配置
+    // "binance": {
+    //     "api_key": "${BINANCE_TESTNET_API_KEY}",
+    //     "api_secret": "${BINANCE_TESTNET_API_SECRET}",
+    //     "testnet": true
+    // },
+    "strategy_mapping": {
+        "ma_strategy": "MAStrategy",
+        "grid_strategy": "GridStrategy",
+        "dual_ma_strategy": "DualMAStrategy",
+        "triple_ma_strategy": "TripleMAStrategy",
+        "slope_ma_strategy": "SlopeMAStrategy"
+    },
+    "strategies": [
+        {
+            "name": "双均线交叉",
+            "type": "dual_ma_strategy",
+            "enabled": true,
+            "symbol": "ethusdt",
+            "ema_fast": 12,
+            "ema_slow": 26,
+            "stop_loss_pct": 3.0,
+            "take_profit_pct": 9.0,
+            "trailing_stop_pct": 3.0,
+            "position_size_pct": 15.0,
+            "max_positions": 3
+        },
+        {
+            "name": "三均线趋势",
+            "type": "triple_ma_strategy",
+            "enabled": true,
+            "symbol": "ethusdt",
+            "ema_fast": 10,
+            "ema_medium": 30,
+            "ema_slow": 60,
+            "stop_loss_pct": 3.5,
+            "take_profit_pct": 10.0,
+            "trailing_stop_pct": 3.5,
+            "position_size_pct": 15.0,
+            "max_positions": 3
+        },
+        {
+            "name": "趋势跟踪型",
+            "type": "ma_strategy",
+            "enabled": true,
+            "symbol": "ethusdt",
+            "ema_fast": 12,
+            "ema_medium": 26,
+            "ema_slow": 50,
+            "ema_trend": 200,
+            "macd_fast": 12,
+            "macd_slow": 26,
+            "macd_signal": 9,
+            "adx_period": 14,
+            "adx_threshold": 25,
+            "super_atr_period": 10,
+            "super_multiplier": 2.8,
+            "stop_loss_pct": 4.0,
+            "take_profit_pct": 12.0,
+            "trailing_stop_pct": 4.0,
+            "position_size_pct": 15.0,
+            "max_positions": 3
+        },
+        {
+            "name": "ETH网格",
+            "type": "grid_strategy",
+            "enabled": true,
+            "symbol": "ethusdt",
+            "grid_low": 1700,
+            "grid_high": 2600,
+            "grid_count": 10,
+            "position_per_grid_pct": 10.0,
+            "stop_loss_pct": 10.0,
+            "take_profit_pct": 8.0,
+            "trailing_stop_pct": 5.0,
+            "max_positions": 10
+        },
+        {
+            "name": "均线斜率策略",
+            "type": "slope_ma_strategy",
+            "enabled": true,
+            "symbol": "ethusdt",
+            "ma_fast": 5,
+            "ma_medium": 10,
+            "ma_slow": 20,
+            "trail_drop": 0.02,
+            "take_profit": 0.08,
+            "stop_loss": 0.02,
+            "stop_loss_pct": 1000,
+            "take_profit_pct": 1000,
+            "trailing_stop_pct": 1000,
+            "position_size_pct": 50.0,
+            "max_positions": 1
+        }
+    ]
+}

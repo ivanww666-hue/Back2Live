@@ -1,0 +1,38 @@
+{
+    "_comment": "均线斜率策略专用配置 — 使用策略内部风控 (stop_loss/take_profit/trail_drop)，不再重复设置风控层参数",
+    "mode": "backtest",
+    "interval": "1h",
+    "initial_capital": 10000.0,
+    "db_path": "market_data.db",
+    "output_path": "results",
+    "start_date": "2024-01-01",
+    "end_date": "2026-01-20",
+    "max_workers": 4,
+    "binance": {
+        "api_key": "",
+        "api_secret": "",
+        "testnet": true
+    },
+    "strategy_mapping": {
+        "slope_ma_strategy": "SlopeMAStrategy"
+    },
+    "strategies": [
+        {
+            "name": "均线斜率策略",
+            "type": "slope_ma_strategy",
+            "enabled": true,
+            "symbol": "ethusdt",
+            "ma_fast": 5,
+            "ma_medium": 10,
+            "ma_slow": 20,
+            "trail_drop": 0.02,
+            "take_profit": 0.08,
+            "stop_loss": 0.02,
+            "stop_loss_pct": 1000,
+            "take_profit_pct": 1000,
+            "trailing_stop_pct": 1000,
+            "position_size_pct": 15.0,
+            "max_positions": 1
+        }
+    ]
+}

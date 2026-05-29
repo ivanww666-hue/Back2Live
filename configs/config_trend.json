@@ -1,0 +1,46 @@
+{
+    "_comment": "仅趋势跟踪策略配置",
+    "mode": "live",
+    "interval": "1h",
+    "initial_capital": 10000.0,
+    "db_path": "market_data.db",
+    "output_path": "results",
+    "start_date": "2024-01-01",
+    "end_date": "2026-01-20",
+    "max_workers": 4,
+    "binance": {
+        "api_key": "${BINANCE_API_KEY}",
+        "api_secret": "${BINANCE_API_SECRET}",
+        "testnet": true
+    },
+    "strategy_mapping": {
+        "ma_strategy": "MAStrategy",
+        "dual_ma_strategy": "DualMAStrategy",
+        "triple_ma_strategy": "TripleMAStrategy",
+        "slope_ma_strategy": "SlopeMAStrategy"
+    },
+    "strategies": [
+        {
+            "name": "趋势跟踪型",
+            "type": "ma_strategy",
+            "enabled": true,
+            "symbol": "ethusdt",
+            "ema_fast": 12,
+            "ema_medium": 26,
+            "ema_slow": 50,
+            "ema_trend": 200,
+            "macd_fast": 12,
+            "macd_slow": 26,
+            "macd_signal": 9,
+            "adx_period": 14,
+            "adx_threshold": 23,
+            "super_atr_period": 10,
+            "super_multiplier": 2.8,
+            "stop_loss_pct": 3.0,
+            "take_profit_pct": 8.0,
+            "trailing_stop_pct": 3.5,
+            "position_size_pct": 20.0,
+            "max_positions": 3
+        }
+    ]
+}
