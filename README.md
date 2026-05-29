@@ -112,9 +112,11 @@ result = engine.run(
 print(result.summary())
 ```
 
-### 命令行回测
+### 下载历史数据 命令行回测
 
 ```bash
+python main.py --download
+python main.py --mode backtest --strategies "ETH网格"
 python main.py --mode backtest --symbol btcusdt --interval 1h --capital 10000
 ```
 
