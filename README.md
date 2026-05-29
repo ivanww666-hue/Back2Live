@@ -1,4 +1,4 @@
-# Back2Live — 虚拟货币现货交易回测/实盘系统
+# Backtest - 虚拟货币现货交易回测/实盘系统
 
 支持多品种多策略同时回测或实盘运行，回测与实盘可自由切换。  
 针对 Binance 交易所现货市场设计，内置网格、趋势跟踪、均线斜率等多种策略。
@@ -331,12 +331,10 @@ result = engine.run(
 print(result.summary())
 ```
 
-### 多品种多策略回测
+### 命令行回测
 
-```python
-engine.add_strategy(ma_strategy)     # 品种: btcusdt
-engine.add_strategy(grid_strategy)   # 品种: ethusdt
-result = engine.run_many(symbols=["btcusdt", "ethusdt"], interval="1h")
+```bash
+python main.py --mode backtest --symbol btcusdt --interval 1h --capital 10000
 ```
 
 所有 K 线按时间排序后组成统一事件流，跨品种时间对齐。
